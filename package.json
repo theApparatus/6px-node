@@ -1,0 +1,17 @@
+{
+  "name": "6px",
+  "version": "0.0.1",
+  "description": "NodeJS SDK for 6px.io",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "6px",
+    "image",
+    "manipulation",
+    "saas"
+  ],
+  "author": "6px.io",
+  "license": "MIT"
+}
