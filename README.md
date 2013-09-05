@@ -1,4 +1,4 @@
 6px-node-sdk
 ============
 
-Node.JS 6px SDK
+Node.js 6px SDK
