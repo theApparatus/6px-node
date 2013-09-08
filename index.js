@@ -1,7 +1,7 @@
 var fs     = require('fs'),
 	http   = require('http');
 
-var version = '0.0.1';
+var version = '0.0.2';
 
 var findImageType = function(buffer) {
 	var int32View = new Int32Array(buffer);
@@ -75,6 +75,9 @@ var sendToServer = function(data, fn) {
 
 var _6px = function(input) {
 	this.image = input;
+	this.tag = false;
+	this.type = 'image/png';
+	this.callback = false;
 	this.actions = {};
 };
 
@@ -129,6 +132,24 @@ _6px.prototype.crop = function(position) {
 	return this;
 };
 
+_6px.prototype.tag = function(tag) {
+	this.tag = tag;
+
+	return this;
+};
+
+_6px.prototype.callback = function(url) {
+	this.url = url;
+
+	return this;
+};
+
+_6px.prototype.type = function(mime) {
+	this.type = mime;
+
+	return this;
+};
+
 _6px.prototype.save = function(options, fn) {
 	
 	var _this = this;
@@ -140,19 +161,17 @@ _6px.prototype.save = function(options, fn) {
 
 	var json = {
 		callback: {
-			url: options.callback || null
+			url: this.callback || null
 		},
 		priority: (this.priority || 0),
 		user_id: px.userData.userId,
 		output: [{
 			ref: [0],
-			tag: options.tag || null,
-			type: options.type || 'image/png',
-			// url: options.url || null,
+			tag: this.tag || null,
+			type: this.type,
 			methods: [this.actions]
 		}]
 	};
-
 
 	parseInput(this.image, function(data) {
 		
@@ -183,10 +202,8 @@ var px = function(input) {
 px.version = version;
 
 px.priorities = {
-	critical: 4,
-	high: 3,
-	medium: 2,
-	normal: 1
+	high: 1,
+	normal: 0
 };
 
 /**
