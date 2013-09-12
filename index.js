@@ -73,14 +73,17 @@ var sendToServer = function(data, fn) {
 	// write data to request body
 	req.write(content);
 	req.end();
+
 };
 
 var _6px = function(input) {
+
 	this.image = input;
 	this.tag = false;
 	this.type = 'image/png';
 	this.callback = false;
 	this.actions = {};
+
 };
 
 /**
@@ -93,6 +96,7 @@ _6px.prototype.resize = function(size) {
 	this.actions.resize = size;
 
 	return this;
+
 };
 
 _6px.prototype.filter = function(type, value) {
@@ -110,6 +114,7 @@ _6px.prototype.filter = function(type, value) {
 	this.actions.filter[type] = value;
 
 	return this;
+
 };
 
 _6px.prototype.priority = function(value) {
@@ -125,6 +130,7 @@ _6px.prototype.rotate = function(options) {
 	this.actions.rotate = options;
 
 	return this;
+
 };
 
 _6px.prototype.crop = function(position) {
@@ -135,18 +141,21 @@ _6px.prototype.crop = function(position) {
 };
 
 _6px.prototype.tag = function(tag) {
+
 	this.tag = tag;
 
 	return this;
 };
 
 _6px.prototype.callback = function(url) {
+
 	this.url = url;
 
 	return this;
 };
 
 _6px.prototype.type = function(mime) {
+
 	this.type = mime;
 
 	return this;
@@ -199,6 +208,7 @@ var px = function(input) {
 	}
 
 	return new _6px(input);
+
 };
 
 px.version = version;
@@ -226,6 +236,7 @@ px.init = function(data) {
 	}
 
 	px.userData = data;
+	
 };
 
 module.exports.px = px;
