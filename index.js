@@ -45,7 +45,8 @@ var sendToServer = function(data, fn) {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-			'Content-Length': contentLength
+			'Content-Length': contentLength,
+			'User-Agent': '6px Node SDK ' + version
 		}
 	};
 
