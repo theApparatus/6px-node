@@ -41,7 +41,7 @@ var sendToServer = function(data, fn) {
 	var options = {
 		host: 'api.6px.io',
 		port: 80,
-		path: '/users/' + px.userData.userId + '/jobs',
+		path: '/users/' + px.userData.userId + '/jobs?key=' + px.userData.apiKey + '&secret=' + px.userData.apiSecret,
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ var sendToServer = function(data, fn) {
 	});
 
 	req.on('error', function(e) {
-		console.log('problem with request: ' + e.message);
+		console.log('problem with request', e.message);
 	});
 
 	// write data to request body
