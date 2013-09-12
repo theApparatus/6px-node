@@ -7,16 +7,16 @@ var findImageType = function(buffer) {
 	var int32View = new Int32Array(buffer);
 	switch(int32View[0]) {
 		case 137: 
-			return "image/png";
+			return 'image/png';
 		case 255:
-			return "image/jpg";
+			return 'image/jpg';
 		default:
 			throw '6px: Unexpected file type!'
 	}
 };
 
 var toDataURI = function(buffer) {
-	return 'data:'+ findImageType(buffer) + ';base64,' + buffer.toString('base64');
+	return 'data:' + findImageType(buffer) + ';base64,' + buffer.toString('base64');
 };
 
 var parseInput = function(input, cb) {
