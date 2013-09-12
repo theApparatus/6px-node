@@ -1,5 +1,5 @@
 var fs     = require('fs'),
-	http   = require('http');
+	https  = require('https');
 
 var version = '0.0.2';
 
@@ -40,17 +40,18 @@ var sendToServer = function(data, fn) {
 
 	var options = {
 		host: 'api.6px.io',
-		port: 80,
+		port: 443,
 		path: '/users/' + px.userData.userId + '/jobs?key=' + px.userData.apiKey + '&secret=' + px.userData.apiSecret,
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 			'Content-Length': contentLength
-		}
+		},
+		rejectUnauthorized: false
 	};
 
 	var response = [];
-	var req = http.request(options, function(res) {
+	var req = https.request(options, function(res) {
 
 		res.setEncoding('utf8');
 
