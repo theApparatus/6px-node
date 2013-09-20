@@ -6,12 +6,14 @@ var version = '0.0.2';
 var findImageType = function(buffer) {
 	var int32View = new Int32Array(buffer);
 	switch(int32View[0]) {
+		case 71:
+			return 'image/gif';
 		case 137: 
 			return 'image/png';
 		case 255:
 			return 'image/jpg';
 		default:
-			throw '6px: Unexpected file type!'
+			throw '6px: Unsupported file type!'
 	}
 };
 
@@ -31,6 +33,7 @@ var parseInput = function(input, cb) {
 	if (Buffer.isBuffer(input)) {
 		cb(toDataURI(input));
 	}
+	
 };
 
 var sendToServer = function(data, fn) {
