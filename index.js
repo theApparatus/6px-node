@@ -1,7 +1,7 @@
 var fs     = require('fs'),
 	https  = require('https');
 
-var version = '0.0.2';
+var version = '0.0.7';
 
 var findImageType = function(buffer) {
 	var int32View = new Int32Array(buffer);
@@ -85,7 +85,9 @@ var _6px = function(input) {
 	this.tag = false;
 	this.type = 'image/png';
 	this.callback = false;
-	this.actions = {};
+	this.actions = [];
+	this.filters = {};
+	this.hasFilters = false;
 
 };
 
@@ -96,7 +98,7 @@ var _6px = function(input) {
  */
 _6px.prototype.resize = function(size) {
 
-	this.actions.resize = size;
+	this.actions.push({ method: 'resize', options: size });
 
 	return this;
 
@@ -104,17 +106,14 @@ _6px.prototype.resize = function(size) {
 
 _6px.prototype.filter = function(type, value) {
 
-	if (!this.actions.filter) {
-		this.actions.filter = {};
-	}
-
 	// User took a shortcut and used an object to define them all at once
 	if (typeof type == 'object') {
-		this.actions.filter = type;
-		return this;
+		this.filters = type;
+	} else {
+		this.filters[type] = value;
 	}
 
-	this.actions.filter[type] = value;
+	this.hasFilters = true;
 
 	return this;
 
@@ -130,7 +129,7 @@ _6px.prototype.priority = function(value) {
 
 _6px.prototype.rotate = function(options) {
 
-	this.actions.rotate = options;
+	this.actions.push({ method: 'rotate', options: options });
 
 	return this;
 
@@ -138,7 +137,7 @@ _6px.prototype.rotate = function(options) {
 
 _6px.prototype.crop = function(position) {
 	
-	this.actions.crop = position;
+	this.actions.push({ method: 'crop', options: position });
 
 	return this;
 };
@@ -173,11 +172,14 @@ _6px.prototype.save = function(options, fn) {
 		var options = {};
 	}
 
+	if (this.hasFilters) {
+		this.actions.push({ method: 'filter', options: this.filters });
+	}
+
 	var json = {
 		callback: {
 			url: this.callback || null
 		},
-		priority: (this.priority || 0),
 		user_id: px.userData.userId,
 		output: [{
 			ref: [0],
@@ -215,11 +217,6 @@ var px = function(input) {
 };
 
 px.version = version;
-
-px.priorities = {
-	high: 1,
-	normal: 0
-};
 
 /**
  * Use this to set up your account with apiKey, etc
