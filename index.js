@@ -44,7 +44,7 @@ var sendToServer = function(data, fn) {
 	var options = {
 		host: 'api.6px.io',
 		port: 443,
-		path: '/users/' + px.userData.userId + '/jobs?key=' + px.userData.apiKey + '&secret=' + px.userData.apiSecret,
+		path: '/v1/users/' + px.userData.userId + '/jobs?key=' + px.userData.apiKey + '&secret=' + px.userData.apiSecret,
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
