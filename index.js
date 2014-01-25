@@ -5,11 +5,14 @@ var version = '0.0.2';
 
 var findImageType = function(buffer) {
 	var int32View = new Int32Array(buffer);
+
 	switch(int32View[0]) {
 		case 137: 
 			return "image/png";
 		case 255:
 			return "image/jpg";
+		case 71:
+			return "image/gif";
 		default:
 			throw '6px: Unexpected file type!'
 	}
@@ -79,7 +82,10 @@ var _6px = function(input) {
 	this.tag = false;
 	this.type = 'image/png';
 	this.callback = false;
-	this.actions = {};
+	this.actions = [];
+	this.hasFilters = false;
+	this.filters = {};
+	this.filters = {};
 };
 
 /**
@@ -89,46 +95,35 @@ var _6px = function(input) {
  */
 _6px.prototype.resize = function(size) {
 
-	this.actions.resize = size;
+	this.actions.push({ method: 'resize', options: size });
 
 	return this;
 };
 
 _6px.prototype.filter = function(type, value) {
 
-	if (!this.actions.filter) {
-		this.actions.filter = {};
-	}
-
 	// User took a shortcut and used an object to define them all at once
 	if (typeof type == 'object') {
-		this.actions.filter = type;
-		return this;
+		this.filters = type;
+	} else {
+		this.filters[type] = value;
 	}
 
-	this.actions.filter[type] = value;
+	this.hasFilters = true;
 
 	return this;
-};
-
-_6px.prototype.priority = function(value) {
-
-	this.priority = value;
-
-	return this;
-
 };
 
 _6px.prototype.rotate = function(options) {
 
-	this.actions.rotate = options;
+	this.actions.push({ method: 'rotate', options: options });
 
 	return this;
 };
 
 _6px.prototype.crop = function(position) {
 	
-	this.actions.crop = position;
+	this.actions.push({ method: 'crop', options: position });
 
 	return this;
 };
@@ -140,6 +135,7 @@ _6px.prototype.tag = function(tag) {
 };
 
 _6px.prototype.callback = function(url) {
+
 	this.url = url;
 
 	return this;
@@ -160,6 +156,11 @@ _6px.prototype.save = function(options, fn) {
 		var options = {};
 	}
 
+	// Combine all of the filters set into one action (if they exist)
+	if (this.hasFilters) {
+		this.actions.push({ method: 'filter', options: this.filters });
+	}
+
 	var json = {
 		callback: {
 			url: this.callback || null
@@ -167,17 +168,17 @@ _6px.prototype.save = function(options, fn) {
 		priority: (this.priority || 0),
 		user_id: px.userData.userId,
 		output: [{
-			ref: [0],
+			ref: [ 'main' ],
 			tag: this.tag || null,
 			type: this.type,
-			methods: [this.actions]
+			methods: this.actions
 		}]
 	};
 
 	parseInput(this.image, function(data) {
 		
-		json.input = [];
-		json.input.push(data);
+		json.input = {};
+		json.input['main'] = data;
 
 		sendToServer(json,
 			function(res) {
