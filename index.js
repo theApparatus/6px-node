@@ -1,25 +1,27 @@
 var fs     = require('fs'),
-	http   = require('http');
+	https  = require('https');
 
-var version = '0.0.2';
+var version = '0.0.7';
 
 var findImageType = function(buffer) {
 	var int32View = new Int32Array(buffer);
 
 	switch(int32View[0]) {
+		case 71:
+			return 'image/gif';
 		case 137: 
-			return "image/png";
+			return 'image/png';
 		case 255:
 			return "image/jpg";
 		case 71:
 			return "image/gif";
 		default:
-			throw '6px: Unexpected file type!'
+			throw '6px: Unsupported file type!'
 	}
 };
 
 var toDataURI = function(buffer) {
-	return 'data:'+ findImageType(buffer) + ';base64,' + buffer.toString('base64');
+	return 'data:' + findImageType(buffer) + ';base64,' + buffer.toString('base64');
 };
 
 var parseInput = function(input, cb) {
@@ -34,6 +36,7 @@ var parseInput = function(input, cb) {
 	if (Buffer.isBuffer(input)) {
 		cb(toDataURI(input));
 	}
+	
 };
 
 var sendToServer = function(data, fn) {
@@ -43,18 +46,19 @@ var sendToServer = function(data, fn) {
 
 	var options = {
 		host: 'api.6px.io',
-		port: 80,
-		path: '/users/' + px.userData.userId + '/jobs?key=' + px.userData.apiKey + '&secret=' + px.userData.apiSecret,
+		port: 443,
+		path: '/v1/users/' + px.userData.userId + '/jobs?key=' + px.userData.apiKey + '&secret=' + px.userData.apiSecret,
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 			'Content-Length': contentLength,
 			'User-Agent': '6px Node SDK ' + version
-		}
+		},
+		rejectUnauthorized: false
 	};
 
 	var response = [];
-	var req = http.request(options, function(res) {
+	var req = https.request(options, function(res) {
 
 		res.setEncoding('utf8');
 
@@ -75,9 +79,11 @@ var sendToServer = function(data, fn) {
 	// write data to request body
 	req.write(content);
 	req.end();
+
 };
 
 var _6px = function(input) {
+
 	this.image = input;
 	this.tag = false;
 	this.type = 'image/png';
@@ -85,7 +91,7 @@ var _6px = function(input) {
 	this.actions = [];
 	this.hasFilters = false;
 	this.filters = {};
-	this.filters = {};
+	this.hasFilters = false;
 };
 
 /**
@@ -98,6 +104,7 @@ _6px.prototype.resize = function(size) {
 	this.actions.push({ method: 'resize', options: size });
 
 	return this;
+
 };
 
 _6px.prototype.filter = function(type, value) {
@@ -119,6 +126,7 @@ _6px.prototype.rotate = function(options) {
 	this.actions.push({ method: 'rotate', options: options });
 
 	return this;
+
 };
 
 _6px.prototype.crop = function(position) {
@@ -129,6 +137,7 @@ _6px.prototype.crop = function(position) {
 };
 
 _6px.prototype.tag = function(tag) {
+
 	this.tag = tag;
 
 	return this;
@@ -142,6 +151,7 @@ _6px.prototype.callback = function(url) {
 };
 
 _6px.prototype.type = function(mime) {
+
 	this.type = mime;
 
 	return this;
@@ -165,7 +175,6 @@ _6px.prototype.save = function(options, fn) {
 		callback: {
 			url: this.callback || null
 		},
-		priority: (this.priority || 0),
 		user_id: px.userData.userId,
 		output: [{
 			ref: [ 'main' ],
@@ -199,14 +208,10 @@ var px = function(input) {
 	}
 
 	return new _6px(input);
+
 };
 
 px.version = version;
-
-px.priorities = {
-	high: 1,
-	normal: 0
-};
 
 /**
  * Use this to set up your account with apiKey, etc
@@ -226,6 +231,7 @@ px.init = function(data) {
 	}
 
 	px.userData = data;
+	
 };
 
 module.exports.px = px;
