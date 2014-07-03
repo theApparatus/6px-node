@@ -1,10 +1,14 @@
 {
   "name": "6px",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "NodeJS SDK for 6px.io",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/6px-io/6px-node-sdk"
   },
   "keywords": [
     "6px",
