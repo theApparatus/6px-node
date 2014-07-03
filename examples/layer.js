@@ -1,7 +1,5 @@
-var px = require('../.');
-
-px.init({
-    userId: '***USER_ID***',
+var px = require('../.')({
+    userId: '***API_KEY***',
     apiKey: '***API_KEY***',
     apiSecret: '***API_SECRET***'
 });
