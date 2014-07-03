@@ -1,6 +1,6 @@
 {
   "name": "6px",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "NodeJS SDK for 6px.io",
   "main": "index.js",
   "scripts": {
