@@ -43,6 +43,9 @@ output.layer('logo', {
 // Where does the image end up?  Passing `6px` will send it to 6px's CDN.
 output.url('6px');
 
+// Every output needs a name
+output.tag('watermarked');
+
 /**
  * Send to 6px!  The result will be a response from the API with the ID.
  *
@@ -70,6 +73,7 @@ image.output({ taxi: 'unsplashed_6px_watermark' })
     .layer('logo', {
         opacity: 0.6
     })
+    .tag('watermarked')
     .url('6px');
 
 image.save(function(err, res) {
