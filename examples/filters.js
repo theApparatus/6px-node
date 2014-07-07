@@ -13,7 +13,8 @@ image.output({ taxi: false })
         sepia: 80,
         contrast: 60
     })
-    .url('6px');
+    .url('6px')
+    .tag('filtered');
 
 image.save(function(err, res) {
     console.log(res);

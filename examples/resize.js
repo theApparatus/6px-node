@@ -12,7 +12,8 @@ image.output({ taxi: false })
     .resize({
         width: 250,
     })
-    .url('6px');
+    .url('6px')
+    .tag('resized');
 
 image.save(function(err, res) {
     console.log(res);

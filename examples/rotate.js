@@ -12,7 +12,8 @@ image.output({ taxi: false })
     .rotate({
         degrees: 40
     })
-    .url('6px');
+    .url('6px')
+    .tag('rotated');
 
 image.save(function(err, res) {
     console.log(res);

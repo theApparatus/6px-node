@@ -15,7 +15,8 @@ image.output({ taxi: false })
         width: 250,
         height: 250
     })
-    .url('6px');
+    .url('6px')
+    .tag('cropped');
 
 image.save(function(err, res) {
     console.log(res);
