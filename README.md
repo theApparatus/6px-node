@@ -88,3 +88,5 @@ image.save(function(err, res) {
 });
 ```
 Granted, we lost the comments, but you can see most of the methods are set up to be chainable.
+
+More examples of what is possible can be found by visiting the [6px API documentation](https://github.com/6px-io/6px-api-docs)
