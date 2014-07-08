@@ -1,9 +1,16 @@
-NodeJS 6px SDK
-============
+Node.js module for 6px
+======================
 
-Wrapper to the 6px image processing API.  Includes methods to make the process of sending over jobs easier.
+Node.js module for interacting with the [6px API](http://6px.io). This module includes methods to make the process of sending images to 6px for processing easier.
 
-More examples can be found in the examples directory, but here's a sample of adding a watermark to an image.
+## Getting Started
+
+Install the NPM package:
+```bash
+$ npm install 6px
+```
+
+More examples can be found in the examples directory, but here's a sample of adding a watermark to an image:
 ```javascript
 var px = require('6px')({
     userId: '***USER_ID***',
