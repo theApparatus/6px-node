@@ -14,7 +14,9 @@
     "6px",
     "image",
     "manipulation",
-    "saas"
+    "processing",
+    "saas",
+    "paas"
   ],
   "author": "6px.io",
   "license": "MIT"
