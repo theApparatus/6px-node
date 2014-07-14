@@ -97,7 +97,7 @@ var output = image.output({ taxi: 'unsplashed_taxi' })
     .url('6px')
     .filter({
         colorize: { hex: '#00FF00', strength: 80 },
-        stackBlur: 5
+        stackBlur: 20
     });
 
 image.save(function(err, res) {
