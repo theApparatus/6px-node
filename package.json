@@ -1,6 +1,6 @@
 {
   "name": "6px",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "Node.js module for 6px",
   "main": "index.js",
   "scripts": {
