@@ -1,7 +1,7 @@
 var px = require('../.')({
-    userId: '53570317ed81710200aa471e',
-    apiKey: '0284e6a8b711cf89ae0897040029b34b',
-    apiSecret: '1039ebfde3d76eff6aeaea0e87fcf987'
+    userId: '***USER_ID***',
+    apiKey: '***API_KEY***',
+    apiSecret: '***API_SECRET***'
 });
 
 var image = px({
