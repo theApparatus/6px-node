@@ -1,6 +1,6 @@
 {
   "name": "6px",
-  "version": "0.0.14",
+  "version": "0.0.18",
   "description": "Node.js module for 6px",
   "main": "index.js",
   "scripts": {
@@ -14,8 +14,17 @@
     "6px",
     "image",
     "manipulation",
-    "saas"
+    "processing",
+    "saas",
+    "paas"
   ],
-  "author": "6px.io",
-  "license": "MIT"
+  "author": "Dustin Higginbotham <dustin@6px.io> (https://6px.io)",
+  "contributors": [
+    "Nick Parsons <nick@6px.io> (https://6px.io)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/6px-io/6px-js/issues"
+  },
+  "homepage": "https://github.com/6px-io/6px-js"
 }

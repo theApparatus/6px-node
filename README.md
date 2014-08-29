@@ -1,9 +1,16 @@
-NodeJS 6px SDK
-============
+Node.js module for 6px
+======================
 
-Wrapper to the 6px image processing API.  Includes methods to make the process of sending over jobs easier.
+Node.js module for interacting with the [6px API](http://6px.io). This module includes methods that makes sending image processing jobs to 6px easier.
 
-More examples can be found in the examples directory, but here's a sample of adding a watermark to an image.
+## Getting Started
+
+Install the NPM package:
+```bash
+$ npm install 6px
+```
+##Examples
+If you want to simply upload an image to the 6px CDN:
 ```javascript
 var px = require('6px')({
     userId: '***USER_ID***',
@@ -11,52 +18,16 @@ var px = require('6px')({
     apiSecret: '***API_SECRET***'
 });
 
-/**
- * Load our images
- *
- * It can be a path to a file on your machine.
- * It can be a buffer.
- * It can be a location on the internet.
- */
-var image = px({
-    taxi: './images/unsplash_city_taxi.jpg',
-    logo: 'http://6px.io/img/px-logo-md@2x.png'
-});
+var image = px({taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg'});
+var output = image.output({ taxi: 'unsplashed_taxi' }).tag('img').url('6px');
 
-/**
- * Create a new output object.
- *
- * We need to tell that output which input we are working with.
- * In this case we will use the taxi as the main image.  We use an object, that way we can specify the filename that we want to use.  You do have the option of just putting `false` in there, and 6px will generate a name for you.
- */
-var output = image.output({ taxi: 'unsplashed_6px_watermark' });
-
-/**
- * We are now adding a layer action.  We are referring to the other input we defined earlier.
- *
- * Some options are opacity, x, y, width, height.
- */
-output.layer('logo', {
-    opacity: 0.6
-});
-
-// Where does the image end up?  Passing `6px` will send it to 6px's CDN.
-output.url('6px');
-
-// Every output needs a name
-output.tag('watermarked');
-
-/**
- * Send to 6px!  The result will be a response from the API with the ID.
- *
- * This doesn't mean the job is done.  This means the API has received the request.
- */
 image.save(function(err, res) {
     console.log(res);
 });
 ```
+Note: When that callback on the save object is fired, it is only the API's acknowledgment that it received the request.
 
-All of those methods are chainable, by the way:
+Given that vintage photos are kind of kind of popular right now, let's take this up a notch:
 ```javascript
 var px = require('6px')({
     userId: '***USER_ID***',
@@ -64,20 +35,77 @@ var px = require('6px')({
     apiSecret: '***API_SECRET***'
 });
 
-var image = px({
-    taxi: './images/unsplash_city_taxi.jpg',
-    logo: 'http://6px.io/img/px-logo-md@2x.png'
-});
-
-image.output({ taxi: 'unsplashed_6px_watermark' })
-    .layer('logo', {
-        opacity: 0.6
-    })
-    .tag('watermarked')
-    .url('6px');
+var image = px({taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg'});
+var output = image.output({ taxi: 'unsplashed_taxi' })
+    .tag('vintage')
+    .url('6px')
+    .filter({ sepia: 70 });
 
 image.save(function(err, res) {
-    console.log(res);
+    console.log('processing');
 });
 ```
-Granted, we lost the comments, but you can see most of the methods are set up to be chainable.
+So, we have a bit of an extreme sepia effect going on here, but that's fine.  I think this deserves to be more of a thumbnail.  We are going to resize it now:
+```javascript
+var px = require('6px')({
+    userId: '***USER_ID***',
+    apiKey: '***API_KEY***',
+    apiSecret: '***API_SECRET***'
+});
+
+var image = px({taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg'});
+var output = image.output({ taxi: 'unsplashed_taxi' })
+    .tag('vintage_thumb')
+    .url('6px')
+    .filter({ sepia: 70 })
+    .resize({ width: 75 });
+
+image.save(function(err, res) {
+    console.log('processing');
+});
+```
+Another thing we can do is change the dominate color of an image:
+```javascript
+var px = require('6px')({
+    userId: '***USER_ID***',
+    apiKey: '***API_KEY***',
+    apiSecret: '***API_SECRET***'
+});
+
+var image = px({taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg'});
+var output = image.output({ taxi: 'unsplashed_taxi' })
+    .tag('green')
+    .url('6px')
+    .filter({ colorize: { hex: '#00FF00', strength: 80 } });
+
+image.save(function(err, res) {
+    console.log('processing');
+});
+
+```
+Let's blur the image at the same time.
+```javascript
+var px = require('6px')({
+    userId: '***USER_ID***',
+    apiKey: '***API_KEY***',
+    apiSecret: '***API_SECRET***'
+});
+
+var image = px({taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg'});
+var output = image.output({ taxi: 'unsplashed_taxi' })
+    .tag('green_blur')
+    .url('6px')
+    .filter({
+        colorize: { hex: '#00FF00', strength: 80 },
+        stackBlur: 20
+    });
+
+image.save(function(err, res) {
+    console.log('processing');
+});
+```
+Now that we have covered some of the simple use cases, feel free to refer to our documentation!
+
+##[API Documentation](https://github.com/6px-io/6px-api-docs)
+
+Keep us posted on the cool stuff you are doing by sending us an email at <ops@6px.io>. We are constantly trying to improve the user experience. If you come across any issues or have suggestions please create an [issue ticket.](https://github.com/6px-io/6px-node/issues)
