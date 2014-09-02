@@ -4,18 +4,24 @@ var px = require('../.')({
     apiSecret: '***API_SECRET***'
 });
 
-var image = px({
-    taxi: './images/unsplash_city_taxi.jpg',
-    logo: 'http://6px.io/img/px-logo-md@2x.png'
-});
+px.on('connection', function() {
 
-image.output({ taxi: false })
-    .layer('logo', {
-        opacity: 0.8
-    })
-    .url('6px')
-    .tag('watermarked');
+    var image = px({
+        taxi: './images/unsplash_city_taxi.jpg',
+        logo: 'http://6px.io/img/px-logo-md@2x.png'
+    });
 
-image.save(function(err, res) {
-    console.log(res);
+    image.output({ taxi: false })
+        .layer('logo', {
+            opacity: 0.8
+        })
+        .url('6px')
+        .tag('watermarked');
+
+    image.save().then(function(res) {
+        console.log('Success:', res);
+    }, function(err) {
+        console.log('Error:', err);
+    });
+
 });

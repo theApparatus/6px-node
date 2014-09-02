@@ -1,6 +1,6 @@
 {
   "name": "6px",
-  "version": "0.0.18",
+  "version": "0.1.0",
   "description": "Node.js module for 6px",
   "main": "index.js",
   "scripts": {
@@ -26,5 +26,9 @@
   "bugs": {
     "url": "https://github.com/6px-io/6px-js/issues"
   },
-  "homepage": "https://github.com/6px-io/6px-js"
+  "homepage": "https://github.com/6px-io/6px-js",
+  "dependencies": {
+    "promise": "^5.0.0",
+    "ws": "^0.4.32"
+  }
 }

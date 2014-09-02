@@ -18,14 +18,17 @@ var px = require('6px')({
     apiSecret: '***API_SECRET***'
 });
 
-var image = px({taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg'});
-var output = image.output({ taxi: 'unsplashed_taxi' }).tag('img').url('6px');
+px.on('connection', function() {
+    var image = px({taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg'});
+    var output = image.output({ taxi: 'unsplashed_taxi' }).tag('img').url('6px');
 
-image.save(function(err, res) {
-    console.log(res);
+    image.save().then(function(res) {
+        console.log('Done:', res);
+    }, function(err) {
+        console.log('Error:', err);
+    });
 });
 ```
-Note: When that callback on the save object is fired, it is only the API's acknowledgment that it received the request.
 
 Given that vintage photos are kind of kind of popular right now, let's take this up a notch:
 ```javascript
@@ -35,14 +38,18 @@ var px = require('6px')({
     apiSecret: '***API_SECRET***'
 });
 
-var image = px({taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg'});
-var output = image.output({ taxi: 'unsplashed_taxi' })
-    .tag('vintage')
-    .url('6px')
-    .filter({ sepia: 70 });
+px.on('connection', function() {
+    var image = px({taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg'});
+    var output = image.output({ taxi: 'unsplashed_taxi' })
+        .tag('vintage')
+        .url('6px')
+        .filter({ sepia: 70 });
 
-image.save(function(err, res) {
-    console.log('processing');
+    image.save().then(function(res) {
+        console.log('Done:', res);
+    }, function(err) {
+        console.log('Error:', err);
+    });
 });
 ```
 So, we have a bit of an extreme sepia effect going on here, but that's fine.  I think this deserves to be more of a thumbnail.  We are going to resize it now:
@@ -53,15 +60,19 @@ var px = require('6px')({
     apiSecret: '***API_SECRET***'
 });
 
-var image = px({taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg'});
-var output = image.output({ taxi: 'unsplashed_taxi' })
-    .tag('vintage_thumb')
-    .url('6px')
-    .filter({ sepia: 70 })
-    .resize({ width: 75 });
+px.on('connection', function() {
+    var image = px({taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg'});
+    var output = image.output({ taxi: 'unsplashed_taxi' })
+        .tag('vintage_thumb')
+        .url('6px')
+        .filter({ sepia: 70 })
+        .resize({ width: 75 });
 
-image.save(function(err, res) {
-    console.log('processing');
+    image.save().then(function(res) {
+        console.log('Done:', res);
+    }, function(err) {
+        console.log('Error:', err);
+    });
 });
 ```
 Another thing we can do is change the dominate color of an image:
@@ -72,14 +83,18 @@ var px = require('6px')({
     apiSecret: '***API_SECRET***'
 });
 
-var image = px({taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg'});
-var output = image.output({ taxi: 'unsplashed_taxi' })
-    .tag('green')
-    .url('6px')
-    .filter({ colorize: { hex: '#00FF00', strength: 80 } });
+px.on('connection', function() {
+    var image = px({taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg'});
+    var output = image.output({ taxi: 'unsplashed_taxi' })
+        .tag('green')
+        .url('6px')
+        .filter({ colorize: { hex: '#00FF00', strength: 80 } });
 
-image.save(function(err, res) {
-    console.log('processing');
+    image.save().then(function(res) {
+        console.log('Done:', res);
+    }, function(err) {
+        console.log('Error:', err);
+    });
 });
 
 ```
@@ -91,17 +106,21 @@ var px = require('6px')({
     apiSecret: '***API_SECRET***'
 });
 
-var image = px({taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg'});
-var output = image.output({ taxi: 'unsplashed_taxi' })
-    .tag('green_blur')
-    .url('6px')
-    .filter({
-        colorize: { hex: '#00FF00', strength: 80 },
-        stackBlur: 20
-    });
+px.on('connection', function() {
+    var image = px({taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg'});
+    var output = image.output({ taxi: 'unsplashed_taxi' })
+        .tag('green_blur')
+        .url('6px')
+        .filter({
+            colorize: { hex: '#00FF00', strength: 80 },
+            stackBlur: 20
+        });
 
-image.save(function(err, res) {
-    console.log('processing');
+    image.save().then(function(res) {
+        console.log('Done:', res);
+    }, function(err) {
+        console.log('Error:', err);
+    });
 });
 ```
 Now that we have covered some of the simple use cases, feel free to refer to our documentation!

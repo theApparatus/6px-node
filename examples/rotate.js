@@ -4,17 +4,23 @@ var px = require('../.')({
     apiSecret: '***API_SECRET***'
 });
 
-var image = px({
-    taxi: './images/unsplash_city_taxi.jpg'
-});
+px.on('connection', function() {
 
-image.output({ taxi: false })
-    .rotate({
-        degrees: 40
-    })
-    .url('6px')
-    .tag('rotated');
+    var image = px({
+        taxi: './images/unsplash_city_taxi.jpg'
+    });
 
-image.save(function(err, res) {
-    console.log(res);
+    image.output({ taxi: false })
+        .rotate({
+            degrees: 40
+        })
+        .url('6px')
+        .tag('rotated');
+
+    image.save().then(function(res) {
+        console.log('Done:', res);
+    }, function(err) {
+        console.log('Error:', err);
+    });
+
 });

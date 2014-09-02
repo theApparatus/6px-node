@@ -1,23 +1,38 @@
 var px = require('../.')({
-    userId: '***API_KEY***',
+    userId: '***USER_ID***',
     apiKey: '***API_KEY***',
     apiSecret: '***API_SECRET***'
 });
 
-var image = px({
-    taxi: './images/unsplash_city_taxi.jpg'
-});
+px.on('connection', function() {
 
-image.output({ taxi: false })
-    .crop({
-        x: 0,
-        y: 0,
-        width: 250,
-        height: 250
-    })
-    .url('6px')
-    .tag('cropped');
+    console.log('Connected');
 
-image.save(function(err, res) {
-    console.log(res);
+    var image = px({
+        taxi: './images/unsplash_city_taxi.jpg'
+    });
+
+    image.output({ taxi: false })
+        .crop({
+            x: 0,
+            y: 0,
+            width: 250,
+            height: 250
+        })
+        .crop({
+            x: 100,
+            y: 100,
+            width: 400,
+            height: 400
+        })
+        .url('6px')
+        .tag('cropped');
+
+
+    image.save().then(function(res) {
+        console.log(res.getOutput('cropped').getLocation('taxi'));
+    }, function(err) {
+        console.log(err);
+    });
+
 });
