@@ -117,7 +117,7 @@ px.on('connection', function() {
 });
 ```
 
-Change the dominate color of an image, apply a blur effect, and upload to 6px:
+Change the dominant color of an image and upload to 6px:
 
 ```javascript
 var px = require('6px')();
@@ -139,7 +139,7 @@ px.on('connection', function() {
 });
 ```
 
-Change the dominate color of an image, apply a blur effect, and upload to 6px:
+Change the dominant color of an image, apply a blur effect, and upload to 6px:
 
 ```javascript
 var px = require('6px')();
