@@ -10,7 +10,7 @@ Install the NPM package:
 $ npm install 6px
 ```
 ##Examples
-If you want to simply upload an image to the 6px CDN:
+Upload an image to 6px:
 ```javascript
 var px = require('6px')({
     userId: '***USER_ID***',
