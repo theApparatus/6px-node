@@ -5,63 +5,103 @@ Node.js module for interacting with the [6px API](http://6px.io). This module in
 
 ## Getting Started
 
-Install the NPM package:
-```bash
-$ npm install 6px
+### Installation
+
+Use [NPM](https://www.npmjs.org/package/6px) to install the 6px Node.js module. The following command will download, build, and add the 6px module to your `package.json` file.
+
+```term
+$ npm install 6px --save
 ```
-##Examples
-Upload an image to 6px:
+
+Alternatively, you can include the 6px module manually by adding 6px as a dependency in your `package.json` file.
+
+```json
+"dependencies": {
+    "6px": "0.0.18"
+}
+```
+
+### Initialization
+
+Auto initialize (assuming that the required env vars are available):
+
+```javascript
+var px = require('6px')();
+```
+
+Initialize using environment variables:
+
 ```javascript
 var px = require('6px')({
-    userId: '***USER_ID***',
-    apiKey: '***API_KEY***',
-    apiSecret: '***API_SECRET***'
+    userId: process.env.CLOUD6_USER_ID,
+    apiKey: process.env.CLOUD6_API_KEY,
+    apiSecret: process.env.CLOUD6_API_SECRET
 });
+```
+
+Initialize with hard coded values:
+
+```javascript
+var px = require('6px')({
+    userId: 'YOUR_USER_ID',
+    apiKey: 'YOUR_API_KEY',
+    apiSecret: 'YOUR_API_SECRET'
+});
+```
+
+### Examples
+
+Upload an image to 6px:
+
+```javascript
+var px = require('6px')();
 
 px.on('connection', function() {
-    var image = px({taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg'});
+
+    var image = px({ taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg' });
     var output = image.output({ taxi: 'unsplashed_taxi' }).tag('img').url('6px');
 
     image.save().then(function(res) {
-        console.log('Done:', res);
+        console.log('Res', res);
     }, function(err) {
-        console.log('Error:', err);
+        console.log('Err', err);
     });
+
 });
 ```
 
-Given that vintage photos are kind of kind of popular right now, let's take this up a notch:
+> **Note**: When the callback on the save object is fired, it is only the API's acknowledgment that it has received the request.
+
+Apply a vintage look to an image and upload to 6px:
+
 ```javascript
-var px = require('6px')({
-    userId: '***USER_ID***',
-    apiKey: '***API_KEY***',
-    apiSecret: '***API_SECRET***'
-});
+var px = require('6px')();
 
 px.on('connection', function() {
-    var image = px({taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg'});
+
+    var image = px({ taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg' });
     var output = image.output({ taxi: 'unsplashed_taxi' })
         .tag('vintage')
         .url('6px')
         .filter({ sepia: 70 });
 
     image.save().then(function(res) {
-        console.log('Done:', res);
+        console.log('Res', res);
     }, function(err) {
-        console.log('Error:', err);
+        console.log('Err', err);
     });
+
 });
 ```
-So, we have a bit of an extreme sepia effect going on here, but that's fine.  I think this deserves to be more of a thumbnail.  We are going to resize it now:
+
+Apply a vintage look, generate a thumbnail, and upload to 6px:
+
 ```javascript
-var px = require('6px')({
-    userId: '***USER_ID***',
-    apiKey: '***API_KEY***',
-    apiSecret: '***API_SECRET***'
-});
+var px = require('6px')();
 
 px.on('connection', function() {
-    var image = px({taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg'});
+
+    var image = px({ taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg' });
     var output = image.output({ taxi: 'unsplashed_taxi' })
         .tag('vintage_thumb')
         .url('6px')
@@ -69,45 +109,44 @@ px.on('connection', function() {
         .resize({ width: 75 });
 
     image.save().then(function(res) {
-        console.log('Done:', res);
+        console.log('Res', res);
     }, function(err) {
-        console.log('Error:', err);
+        console.log('Err', err);
     });
+
 });
 ```
-Another thing we can do is change the dominate color of an image:
+
+Change the dominate color of an image, apply a blur effect, and upload to 6px:
+
 ```javascript
-var px = require('6px')({
-    userId: '***USER_ID***',
-    apiKey: '***API_KEY***',
-    apiSecret: '***API_SECRET***'
-});
+var px = require('6px')();
 
 px.on('connection', function() {
-    var image = px({taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg'});
+
+    var image = px({ taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg' });
     var output = image.output({ taxi: 'unsplashed_taxi' })
         .tag('green')
         .url('6px')
         .filter({ colorize: { hex: '#00FF00', strength: 80 } });
 
     image.save().then(function(res) {
-        console.log('Done:', res);
+        console.log('Res', res);
     }, function(err) {
-        console.log('Error:', err);
+        console.log('Err', err);
     });
-});
 
-```
-Let's blur the image at the same time.
-```javascript
-var px = require('6px')({
-    userId: '***USER_ID***',
-    apiKey: '***API_KEY***',
-    apiSecret: '***API_SECRET***'
 });
+```
+
+Change the dominate color of an image, apply a blur effect, and upload to 6px:
+
+```javascript
+var px = require('6px')();
 
 px.on('connection', function() {
-    var image = px({taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg'});
+
+    var image = px({ taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg' });
     var output = image.output({ taxi: 'unsplashed_taxi' })
         .tag('green_blur')
         .url('6px')
@@ -117,14 +156,14 @@ px.on('connection', function() {
         });
 
     image.save().then(function(res) {
-        console.log('Done:', res);
+        console.log('Res', res);
     }, function(err) {
-        console.log('Error:', err);
+        console.log('Err', err);
     });
+
 });
 ```
-Now that we have covered some of the simple use cases, feel free to refer to our documentation!
 
-##[API Documentation](https://github.com/6px-io/6px-api-docs)
+> **Note**: The examples above cover a couple of the many use cases. Please refer to the [official API documentation](https://github.com/6px-io/6px-api-docs) for a full list of possible methods.
 
-Keep us posted on the cool stuff you are doing by sending us an email at <ops@6px.io>. We are constantly trying to improve the user experience. If you come across any issues or have suggestions please create an [issue ticket.](https://github.com/6px-io/6px-node/issues)
+Keep us posted on the cool stuff you are doing by sending an email to <support@6px.io>. If you come across any issues or have suggestions please [open an issue on GitHub](https://github.com/6px-io/6px-node/issues).
