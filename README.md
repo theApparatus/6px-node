@@ -51,7 +51,7 @@ var px = require('6px')({
 
 ### Examples
 
-Upload an image to 6px:
+Upload an image to 6px with a specified tag name:
 
 ```javascript
 var px = require('6px')();
@@ -160,6 +160,71 @@ px.on('connection', function() {
     }, function(err) {
         console.log('Err', err);
     });
+
+});
+```
+
+Get info (e.g. height, width, bytes, size, etc.) on an image:
+
+```javascript
+var px = require('6px')();
+
+px.on('connection', function() {
+
+    var image = px({ taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg' });
+
+    image.getInfo().then(function(res) {
+        console.log('Res', res);
+    }, function(err) {
+        console.log('Err', err);
+    });
+
+});
+```
+
+Override previously specified output using its tag name:
+
+```javascript
+var px = require('6px')();
+
+px.on('connection', function() {
+
+    var image = px({ taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg' });
+
+    var output = image.output({ taxi: 'unsplashed_taxi' })
+        .tag('thumb')
+        .url('6px')
+        .resize({
+            height: 200,
+            width: 200
+        });
+
+    // optionally override previously specified output
+    image.getOutputByTagName('thumb').resize({ height: 400, width: 400 });
+
+    image.save().then(function(res) {
+        console.log('Res', res);
+    }, function(err) {
+        console.log('Err', err);
+    });
+
+});
+```
+
+Convenience function for uploading an image without specifying methods:
+
+```javascript
+var px = require('6px')();
+
+px.on('connection', function() {
+
+    px({ taxi: 'https://s3.amazonaws.com/ooomf-com-files/mtNrf7oxS4uSxTzMBWfQ_DSC_0043.jpg' })
+        .upload().then(function(res) {
+            console.log('Res', res);
+        }, function(err) {
+            console.log('Err', err);
+        })
+    ;
 
 });
 ```
