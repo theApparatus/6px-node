@@ -1,8 +1,4 @@
-var px = require('../.')({
-    userId: '***USER_ID***',
-    apiKey: '***API_KEY***',
-    apiSecret: '***API_SECRET***'
-});
+var px = require('../.')();
 
 px.on('connection', function() {
 
