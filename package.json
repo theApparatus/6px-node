@@ -29,6 +29,7 @@
   "homepage": "https://github.com/6px-io/6px-js",
   "dependencies": {
     "promise": "^5.0.0",
+    "request": "^2.42.0",
     "ws": "^0.4.32"
   }
 }
